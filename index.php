@@ -24,8 +24,83 @@
      */
 
     // TODO Votre code ici, commencez par require un des objet de connexion que nous avons fait ensemble.
+    $server = 'localhost';
+    $user = 'root';
+    $password = '';
+    $db = 'exo196';
 
+    try{
+        $conn = new PDO("mysql:host=$server;dbname=$db", $user, $password);
 
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        $stmt = $conn->prepare("SELECT MIN(age) as minimun FROM user");
+
+        $state = $stmt->execute();
+        if ($state){
+            $min = $stmt->fetch();
+            echo "<pre>";
+            print_r($min);
+            echo "</pre>";
+        }
+        echo "<br>";
+
+        $stmt2 = $conn->prepare("SELECT MAX(age) as maximun FROM user");
+        $state2 = $stmt2->execute();
+
+        if ($state2){
+            $max = $stmt2->fetch();
+            echo "<pre>";
+            print_r($max);
+            echo "</pre>";
+        }
+
+        echo "<br>";
+
+        $stmt3 = $conn->prepare("SELECT count(*) as number FROM user");
+        $state3 = $stmt3->execute();
+
+        if ($state3){
+            $count = $stmt3->fetch();
+            echo "<pre>";
+            print_r($count);
+            echo "</pre>";
+        }
+
+        $stmt4 = $conn->prepare("SELECT * from user WHERE numero >= 5");
+        $state4 = $stmt4->execute();
+
+        if ($state4){
+            $street = $stmt4->fetch();
+            echo "<pre>";
+            print_r($street);
+            echo "</pre>";
+        }
+
+        $stmt5 = $conn->prepare("SELECT AVG(age) as moyenne_age FROM user");
+        $state5 = $stmt5->execute();
+
+        if ($state5){
+            $mediumAge = $stmt5->fetch();
+            echo "<pre>";
+            print_r($mediumAge);
+            echo "</pre>";
+        }
+
+        $stmt6 = $conn->prepare("SELECT SUM(numero) as somme_num FROM user");
+        $state6 = $stmt6->execute();
+
+        if ($state6){
+            $sommeNum = $stmt6->fetch();
+            echo "<pre>";
+            print_r($sommeNum);
+            echo "</pre>";
+        }
+    }
+    catch (PDOException $e) {
+        echo $e->getMessage();
+    }
     ?>
 </body>
 </html>
